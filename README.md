@@ -92,28 +92,3 @@ pio run -t upload
 # open serial monitor at 115200 baud
 pio device monitor -b 115200
 ```
-
-If you change model labels or switch to a new Edge Impulse export, rebuild the project to propagate new headers under `lib/Speech_Emotion_inferencing/src/`.
-
-## Demo
-
-Record a short video showing: device boot (IP visible on TFT), opening the dashboard in a browser, and speaking a few sample phrases to show live bars and cumulative counts. Add a public link to your video/blog/slides here if desired.
-
-## Troubleshooting
-
-- No Wi‑Fi/IP on TFT: confirm `WIFI_SSID`/`WIFI_PASSWORD` build flags and 2.4 GHz AP availability. Reboot the board after updating secrets.
-- Slow/laggy UI: reduce refresh cadence (increase the 1500 ms interval) or shorten the TFT draw area.
-- Model not matching labels: confirm `ei_classifier_inferencing_categories` in the generated library matches your intended label order.
-
-## Reference
-
-This project’s design aligns with findings from:
-
-- TinyML‑Based Speech Emotion Recognition on Microcontrollers Using Quantized CNNs and Mel‑Filterbank Energy. (attached) We draw on this method (MFE + quantized CNN) and apply it to customer‑feedback detection on constrained devices.
-
-Please cite the paper appropriately when reusing the methodology.
-
-## License
-
-This repository includes third‑party code from Edge Impulse under its respective license files in `lib/Speech_Emotion_inferencing/edge-impulse-sdk/`. Your own additions can be licensed as you prefer.
-# Customer-Feedback
