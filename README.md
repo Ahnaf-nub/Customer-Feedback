@@ -8,7 +8,7 @@ This repository includes:
 
 ## Hardware and software
 
-- Board: UNIHIKER K10 (ESP32‑S3 + ES7210 audio codec + 240×320 TFT)
+- Board: UNIHIKER K10 (ESP32‑S3 + ES7243E stereo audio ADC + 240×320 TFT)
 - Microphone: On‑board digital mic via I2S (TDM, down‑mixed to mono, 16 kHz)
 - Tooling: Edge Impulse Studio (dataset + training + C++ SDK export), PlatformIO (build/flash)
 
