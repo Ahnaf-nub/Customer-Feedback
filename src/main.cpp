@@ -532,7 +532,7 @@ static void display_emotion_chart(const ei_impulse_result_t* result) {
             if (count_w > bar_inner_w) count_w = bar_inner_w;
             if (count_w > new_w) {
                 // Fill the segment beyond the probability bar so both are visible (probability color on left)
-                tft.fillRect(bar_fill_x + new_w, row_y + 1, count_w - new_w, bar_h - 2, TFT_RED);
+                tft.fillRect(bar_fill_x + new_w, row_y + 1, count_w - new_w, bar_h - 2, TFT_DARKGREEN);
             }
         }
     }

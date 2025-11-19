@@ -6,6 +6,8 @@ This repository includes:
 - Complete firmware source code (PlatformIO) under `src/` and the Edge Impulse library under `lib/Speech_Emotion_inferencing/`.
 - A detailed development log: dataset preparation, model training, and application development.
 
+Edge Impulse Link: https://studio.edgeimpulse.com/public/692312/live
+
 ## Hardware and software
 
 - Board: UNIHIKER K10 (ESP32‑S3 + ES7243E stereo audio ADC + 240×320 TFT)
@@ -57,6 +59,17 @@ Key elements live in `src/main.cpp`:
 Endpoints:
 - `/` – Tailwind HTML dashboard (served from flash/PROGMEM)
 - `/data` – JSON snapshot for custom dashboards or external clients
+
+## Web Dashboard
+
+The on‑device page shows live class probabilities, the top label, running counts, and connection info, updating automatically.
+
+![Web dashboard preview](images/dash.png)
+
+## Onboard Inferencing
+
+![On-device inference display](images/main.jpeg)
+
 
 ## Building and flashing
 
