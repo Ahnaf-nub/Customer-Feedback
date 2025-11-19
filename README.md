@@ -23,26 +23,21 @@ This repository includes:
 
 ## Dataset preparation
 
-This project follows the flow recommended by TinyML literature for voice‑based classification, notably using Mel‑Filterbank Energy (MFE) features and a compact CNN classifier. We adapt the same technique used in speech‑emotion research to customer‑feedback detection. See the reference paper at the end of this README.
+This project uses Toronto emotional speech set (TESS)
+ Dataset for model training (https://www.kaggle.com/datasets/ejlok1/toronto-emotional-speech-set-tess)
 
-- Classes: map your target feedback categories to a small, distinct set (e.g., {positive, neutral, negative, complaint}). The model in this repo expects `EI_CLASSIFIER_LABEL_COUNT` labels; update labels/model together if you change them.
-- Collection: record short utterances (1–3 s) in varied conditions (speakers, accents, environments). Aim for class balance.
-- Labeling: label each sample by the intended feedback category (e.g., positive/neutral/negative/complaint) rather than raw emotion.
-- Split: train/validation/test with speaker‑independent splits (e.g., 70/15/15) to avoid speaker leakage.
-- Augmentation: mild background noise, gain jitter, and time shift are effective. Avoid over‑augmentation that changes prosody.
-- Sampling: 16 kHz mono is a good trade‑off for prosodic cues and MCU throughput.
-
-Edge Impulse specifics:
-- In the Studio, create an Impulse with MFE (or MFCC if preferred) as the DSP block. Parameters used in our training: window length 25 ms, window stride 10 ms, 20–40 mel bands (project dependent), Hamming window.
-- Normalize per‑feature (per‑axis) and enable quantization‑aware training (QAT) for int8 export.
+In the Studio, MFE was used as the DSP block. Parameters used in our training: window length 25 ms, window stride 10 ms, 20–40 mel bands (project dependent), Hamming window.
 
 ## Model training (Edge Impulse)
 
-- Architecture: compact 1D/2D CNN over time–frequency features with batch norm and dropout. Keep parameters small (< ~250k) to fit memory/speed on ESP32‑S3.
-- Training: Adam optimizer, initial LR 1e‑3 with cosine/step decay; 30–100 epochs; early stopping on validation loss.
-- Quantization: int8 post‑training with QAT enabled to preserve accuracy.
-- Metrics: report overall accuracy, per‑class F1, and a confusion matrix on the held‑out test set.
-- On‑device compute: ensure DSP + inference latency comfortably fits your application cadence (our loop runs ~2 Hz with full UI updates; adjust delays as needed).
+- Input layer (4,018 features)
+- Reshape layer (41 columns)
+- 2D conv / pool layer (8 filters, 3 kernel size, 1 layer)
+- 2D conv / pool layer (16 filters, 3 kernel size, 1 layer)
+- 2D conv / pool layer (32 filters, 3 kernel size, 1 layer)
+- 2D conv / pool layer (64 filters, 3 kernel size, 1 layer)
+- Flatten layer
+- Dropout (rate 0.5)
 
 Export the library via “Deploy → Arduino library” (Edge Impulse), then place it under `lib/Speech_Emotion_inferencing/` (already present here).
 
@@ -50,7 +45,7 @@ Export the library via “Deploy → Arduino library” (Edge Impulse), then pla
 
 Key elements live in `src/main.cpp`:
 
-- Audio capture: uses UNIHIKER K10’s codec via I2S (legacy API). Stereo frames are down‑mixed to mono (left channel) at 16 kHz.
+- Audio capture: uses UNIHIKER K10’s codec via I2S. Stereo frames are down‑mixed to mono (left channel) at 16 kHz.
 - Feature pipeline: sample buffer passed into Edge Impulse `run_classifier` with MFE features compiled into the library.
 - TFT UI: a minimal on‑device dashboard draws a label/score bar chart and shows the board IP along the top.
 - Wi‑Fi + Web dashboard:
